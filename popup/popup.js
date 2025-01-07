@@ -1,0 +1,91 @@
+// Event for updating the added items list
+const itemList = document.getElementById("displayList");
+document.addEventListener("DOMContentLoaded", function () {
+  render_list();
+});
+chrome.storage.onChanged.addListener(async (changes, namespace) => {
+  // Check the storage change is the sync
+  if (namespace === "sync") {
+    await render_list();
+  }
+});
+
+async function render_list() {
+  const items = await chrome.storage.sync.get();
+
+  // Clear items from previous render
+  itemList.innerHTML = "";
+
+  // Populate the list with stored items
+  Object.entries(items).forEach((item) => {
+    const key = item[0];
+    const data = item[1];
+    // Create a div per item
+    const listItem = document.createElement("div");
+
+    // Create a title span
+    const title = document.createElement("span");
+    title.textContent = data.title;
+
+    // Create a url span
+    const url = document.createElement("span");
+    url.textContent = data.url;
+
+    // Add scan button
+    const scan_button = document.createElement("button");
+    scan_button.textContent = "Scan";
+    scan_button.onclick = () => {
+      chrome.runtime.sendMessage({
+        type: "scan",
+        data: { [key]: data },
+      });
+    };
+
+    // Add delete button
+    const delete_button = document.createElement("button");
+    delete_button.textContent = "Delete";
+    delete_button.onclick = () => {
+      chrome.storage.sync.remove(key);
+    };
+
+    // Add all elements to row
+    listItem.appendChild(title);
+    listItem.appendChild(url);
+    listItem.appendChild(scan_button);
+    listItem.appendChild(delete_button);
+
+    // Add row to list
+    itemList.appendChild(listItem);
+  });
+}
+
+// Event for rescanning added items
+document.getElementById("scan").addEventListener("click", async function () {
+  chrome.runtime.sendMessage({
+    type: "scan",
+    data: await chrome.storage.sync.get(),
+  });
+});
+
+// Event for adding a new item
+document.getElementById("add").addEventListener("click", async function () {
+  chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+    const tabId = tabs[0].id;
+    await chrome.scripting.executeScript({
+      files: ["injections/functions.js", "injections/eventListeners.js"],
+      target: { tabId: tabId },
+    });
+    await chrome.scripting.insertCSS({
+      files: ["injections/greyed_out.css"],
+      target: { tabId: tabId },
+    });
+  });
+});
+
+// Event for clearing checklist
+document.getElementById("clear").addEventListener("click", async function () {
+  chrome.storage.sync.clear();
+  chrome.runtime.sendMessage({
+    type: "clear",
+  });
+});
