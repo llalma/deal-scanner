@@ -19,6 +19,17 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   }
 });
 
+async function handle_tab_loading(tabID) {
+  // Force the tab to load by temporarily bringing it to foreground and back
+  setTimeout(() => {
+    chrome.tabs.update(tabID, { active: true }, () => {
+      setTimeout(() => {
+        chrome.tabs.update(tabID, { active: false });
+      }, 100);
+    });
+  }, 100);
+}
+
 async function handle_scan(sites) {
   // get the values added to storage
   // const sites = await chrome.storage.sync.get();
@@ -26,6 +37,9 @@ async function handle_scan(sites) {
   // Iter over each site added
   for (const [k, v] of Object.entries(sites)) {
     chrome.tabs.create({ url: v.url, active: false }, async function (tab) {
+      // Handle stuboarn page loading sites
+      await handle_tab_loading(tab.id);
+
       // Fetch the data on the give xpath
       let current_value = await fetch_page_data(tab.id, v.xpath);
 
