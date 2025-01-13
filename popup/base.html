@@ -1,15 +1,159 @@
-<html>
-  <body>
-    <div class="container">
-	<button class="btn" id="scan">Scan</button>
-	<button class="btn" id="add">Add Item</button>
-	<button class="btn" id="clear">Clear Items</button>
-    </div>
-	
-    <div class="scrollable-list" id="displayList">
-	<!-- Dynamic items will be added here -->
-    </div>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner Interface</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            background-color: #f5f5f5;
+        }
 
-<script src="popup.js"></script>
+        .container {
+            position: relative;
+            width: 600px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #scan {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #4a90e2;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            position: relative;
+        }
+
+        #scan:hover {
+            background-color: #357abd;
+            transform: scale(1.05);
+        }
+
+        .pill-button-left {
+            position: absolute;
+            height: 50px;
+            width: 140px;
+            border-radius: 25px;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .pill-button-right {
+            position: absolute;
+            height: 50px;
+            width: 140px;
+            border-radius: 25px;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        #add {
+            background-color: #27ae60;
+            left: -80px;
+            transform: translateX(60px);
+            opacity: 0;
+            padding-right: 30px;
+        }
+
+        #clear {
+            background-color: #e74c3c;
+            right: -80px;
+            transform: translateX(-60px);
+            opacity: 0;
+            padding-left: 30px;
+        }
+
+        .container.expanded #add {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .container.expanded #clear {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        #add:hover {
+            background-color: #219a52;
+            transform: translateX(0) scale(1.05);
+        }
+
+        #clear:hover {
+            background-color: #c0392b;
+            transform: translateX(0) scale(1.05);
+        }
+
+        .scrollable-list {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            background: white;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container expanded">
+        <div class="button-group">
+            <button class="pill-button-left" id="add">ADD ITEM</button>
+            <button id="scan">SCAN</button>
+            <button class="pill-button-right" id="clear">CLEAR ALL</button>
+        </div>
+        
+        <div class="scrollable-list" id="displayList">
+            <!-- Dynamic items will be added here -->
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+    <script>
+        const container = document.querySelector('.container');
+        const scanBtn = document.getElementById('scan');
+
+        scanBtn.addEventListener('click', () => {
+            container.classList.toggle('expanded');
+        });
+    </script>
+</body>
+</html>
