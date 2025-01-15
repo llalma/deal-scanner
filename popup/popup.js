@@ -27,13 +27,11 @@ async function render_list() {
     const title = document.createElement("span");
     title.textContent = data.title;
 
-    // Create a url span
-    const url = document.createElement("span");
-    url.textContent = data.url;
-
     // Add scan button
     const scan_button = document.createElement("button");
-    scan_button.textContent = "Scan";
+    scan_button.innerHTML =
+      '<i class="fa-solid fa-magnifying-glass-dollar"></i>';
+    scan_button.className = "action-btn";
     scan_button.onclick = () => {
       chrome.runtime.sendMessage({
         type: "scan",
@@ -43,14 +41,14 @@ async function render_list() {
 
     // Add delete button
     const delete_button = document.createElement("button");
-    delete_button.textContent = "Delete";
+    delete_button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+    delete_button.className = "action-btn";
     delete_button.onclick = () => {
       chrome.storage.sync.remove(key);
     };
 
     // Add all elements to row
     listItem.appendChild(title);
-    listItem.appendChild(url);
     listItem.appendChild(scan_button);
     listItem.appendChild(delete_button);
 

@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanner Interface</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+
+
+
+	/* * { */
+	/*     outline: 1px solid red; */
+	/* } */
         body {
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
@@ -117,12 +124,13 @@
             transform: translateX(0) scale(1.05);
         }
 
+	/* // Style for List */
         .scrollable-list {
             position: absolute;
-            top: 120%;
+            top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            width: 80%;
+            width: 70%;
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ddd;
@@ -131,6 +139,47 @@
             background: white;
             box-sizing: border-box;
         }
+
+
+
+	.list-item {
+	  padding: 15px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ddd;
+	  border-radius: 5px;
+	  background-color: #fff;
+	  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	}
+
+	.list-item p {
+	  margin: 0;
+	  font-family: Arial, sans-serif;
+	  font-size: 14px;
+	}
+
+	.list-item a {
+	  color: #007BFF;
+	  text-decoration: none;
+	}
+
+	.list-item a:hover {
+	  text-decoration: underline;
+	}
+
+	/* // actions button */
+	.action-btn{
+	  background: none;
+	  border: none;
+	  padding: 5px;
+	  color: inherit;
+	  cursor: pointer;
+	  font-size: 20px;
+	}
+
+	.action-btn:focus {
+	  outline: none;
+	}
+
     </style>
 </head>
 <body>
