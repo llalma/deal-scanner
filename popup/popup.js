@@ -30,6 +30,9 @@ async function render_list() {
     // Create a div per item
     const listItem = document.createElement("div");
 
+    // highlight the item if it is a deal
+    listItem.style.backgroundColor = data.shouldAlert ? "yellow" : null;
+
     // Create a title span
     const title = document.createElement("span");
     title.textContent = data.title;
