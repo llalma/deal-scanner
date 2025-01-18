@@ -16,6 +16,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     set_badge_text();
   } else if (message.type === "scan") {
     await handle_scan(message.data);
+  } else if (message.type === "reset_deal") {
+    current_deal_count--;
+    update_item(message.key, message.data, message.updated_data);
+    set_badge_text();
   }
 });
 

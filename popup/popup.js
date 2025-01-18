@@ -57,6 +57,20 @@ async function render_list() {
       chrome.windows.create({ url: data.url });
     };
 
+    // Add toggle_deal button
+    const toggle_deal_button = document.createElement("button");
+    toggle_deal_button.innerHTML =
+      '<i class="fa-solid fa-arrow-rotate-left"></i>';
+    toggle_deal_button.className = "action-btn";
+    toggle_deal_button.onclick = () => {
+      chrome.runtime.sendMessage({
+        type: "reset_deal",
+        key: key,
+        data: data,
+        updated_data: { shouldAlert: false },
+      });
+    };
+
     // Add delete button
     const delete_button = document.createElement("button");
     delete_button.innerHTML = '<i class="fa-solid fa-trash"></i>';
@@ -69,6 +83,7 @@ async function render_list() {
     listItem.appendChild(title);
     listItem.appendChild(scan_button);
     listItem.appendChild(link_button);
+    listItem.appendChild(toggle_deal_button);
     listItem.appendChild(delete_button);
 
     // Add row to list
