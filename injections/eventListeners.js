@@ -14,7 +14,16 @@ document.addEventListener(
   "click",
   function (event) {
     const element = event.target;
-    let dollar_value = element.textContent.replace("$", "");
+    const element_text = element.firstChild?.nodeValue?.trim() || "";
+
+    // check if the element actually has text. I.E value is not ina child element
+    if (!element_text) {
+      alert("Selected element did not contain a $ value");
+      return;
+    }
+
+    // Remove $ signs from string
+    let dollar_value = element_text.replace("$", "");
 
     const user_input = prompt(
       `Enter Value to send alert. Current value is ${dollar_value}`,
@@ -34,14 +43,8 @@ document.addEventListener(
         shouldAlert: false,
       },
     });
-  },
-  { signal: window.controller.signal },
-);
 
-// Event to clean up functions. Needs to be after events being removed
-document.addEventListener(
-  "click",
-  () => {
+    // Event to clean up functions. Needs to be after events being removed
     window.controller.abort();
     window._previousElement.style.outline = "";
   },

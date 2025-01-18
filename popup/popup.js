@@ -1,3 +1,10 @@
+// WAit for dom load
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("add").title = "Click on value you wish to watch";
+  document.getElementById("scan").title = "Check values of all watched items";
+  document.getElementById("clear").title = "Delete all watched items";
+});
+
 // Event for updating the added items list
 const itemList = document.getElementById("displayList");
 document.addEventListener("DOMContentLoaded", function () {
@@ -77,6 +84,8 @@ document.getElementById("add").addEventListener("click", async function () {
       files: ["injections/greyed_out.css"],
       target: { tabId: tabId },
     });
+    // Close pupup window so item can be selected be selected
+    await window.close();
   });
 });
 

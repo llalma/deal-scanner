@@ -197,6 +197,14 @@
 
     <script src="popup.js"></script>
     <script>
+
+	// Add tooltips
+	document.addEventListener("DOMContentLoaded", function() {
+	    document.getElementById("add").title = "test"
+	    document.getElementById("scan").title = "test"
+	    document.getElementById("clear").title = "test"
+	});
+
         const container = document.querySelector('.container');
         const scanBtn = document.getElementById('scan');
 
