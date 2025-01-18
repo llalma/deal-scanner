@@ -46,6 +46,14 @@ async function render_list() {
       });
     };
 
+    // Add link button
+    const link_button = document.createElement("button");
+    link_button.innerHTML = '<i class="fa-solid fa-link"></i>';
+    link_button.className = "action-btn";
+    link_button.onclick = () => {
+      chrome.windows.create({ url: data.url });
+    };
+
     // Add delete button
     const delete_button = document.createElement("button");
     delete_button.innerHTML = '<i class="fa-solid fa-trash"></i>';
@@ -57,6 +65,7 @@ async function render_list() {
     // Add all elements to row
     listItem.appendChild(title);
     listItem.appendChild(scan_button);
+    listItem.appendChild(link_button);
     listItem.appendChild(delete_button);
 
     // Add row to list
