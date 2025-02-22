@@ -11,7 +11,7 @@ async function save_page(url, xpath, expected) {
   await page.goto(url, { waitUntil: "networkidle2" });
 
   // Create dir if it dosent exist
-  const folder_name = `${test_folder}/${crypto.randomUUID()}`;
+  const folder_name = `${test_folder}/${crypto.createHash("sha256").update(url).digest("hex")}`;
   if (!fs.existsSync(folder_name)) {
     fs.mkdirSync(folder_name, { recursive: true });
   }
