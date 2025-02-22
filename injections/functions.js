@@ -14,31 +14,34 @@ function mouseout_func(e) {
 
 // Find the Xpath of the selected element
 function getXPath(element) {
-  // If element has an id, we can construct a shorter xpath using id
-  if (element.id) {
-    return `//*[@id="${element.id}"]`;
+  if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+    return null;
   }
 
-  // Get the path to the element
+  // If the element has an ID, return the shortest XPath - Only returns 1 / intentionall as its prefixed in return
+  if (element.id) {
+    return `/*[@id="${element.id}"]`;
+  }
+
   const paths = [];
 
-  // Loop until we reach the root element
-  while (element.nodeType === Node.ELEMENT_NODE) {
-    // Get the element's position among its siblings
-    let index = 1;
-    let sibling = element.previousSibling;
-
-    while (sibling) {
-      if (
-        sibling.nodeType === Node.ELEMENT_NODE &&
-        sibling.tagName === element.tagName
-      ) {
-        index++;
-      }
-      sibling = sibling.previousSibling;
+  while (element && element.nodeType === Node.ELEMENT_NODE) {
+    // If an ancestor has an ID, return the shortest XPath
+    if (element.id) {
+      paths.unshift(`//*[@id="${element.id}"]`);
+      break;
     }
 
-    // Construct the path piece
+    let index = 1;
+    let sibling = element.previousElementSibling;
+
+    while (sibling) {
+      if (sibling.tagName === element.tagName) {
+        index++;
+      }
+      sibling = sibling.previousElementSibling;
+    }
+
     const tagName = element.tagName.toLowerCase();
     const pathPiece = index > 1 ? `${tagName}[${index}]` : tagName;
     paths.unshift(pathPiece);
