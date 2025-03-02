@@ -28,7 +28,7 @@ function getXPath(element) {
   while (element && element.nodeType === Node.ELEMENT_NODE) {
     // If an ancestor has an ID, return the shortest XPath
     if (element.id) {
-      paths.unshift(`//*[@id="${element.id}"]`);
+      paths.unshift(`/*[@id="${element.id}"]`);
       break;
     }
 

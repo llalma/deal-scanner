@@ -1,8 +1,8 @@
 const { test: base, chromium } = require("@playwright/test");
 const path = require("path");
+import * as fs from "fs";
 
-const EXTENSION_PATH = path.join(process.cwd(), "../");
-const TEST_PATH = path.join(__dirname, "tests");
+const EXTENSION_PATH = process.cwd();
 
 export const test = base.extend<{
   context: BrowserContext;
@@ -33,8 +33,11 @@ export const test = base.extend<{
 
   // Load test info using given path
   testInfo: async ({}, use) => {
-    const getTestInfo = (path: string) => {
-      const data = fs.readFileSync(path.join(TEST_PATH, "data.json"), "utf8");
+    const getTestInfo = (test_info_path: string) => {
+      const data = fs.readFileSync(
+        path.join(test_info_path, "data.json"),
+        "utf8",
+      );
       const test_info = JSON.parse(data);
 
       return { test_info };

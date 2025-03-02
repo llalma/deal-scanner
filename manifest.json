@@ -11,5 +11,5 @@
     "service_worker": "background.js"
   },
   "permissions": ["scripting", "activeTab", "storage"],
-  "host_permissions": ["https://*/*"]
+  "host_permissions": ["*://*/*", "file://*/*"]
 }

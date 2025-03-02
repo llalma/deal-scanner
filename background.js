@@ -26,12 +26,17 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 async function handle_scan(sites) {
   // get the values added to storage
   // const sites = await chrome.storage.sync.get();
+  console.log("x");
 
   // Iter over each site added
   for (const [k, v] of Object.entries(sites)) {
     chrome.tabs.create({ url: v.url, active: true }, async function (tab) {
       // Fetch the data on the give xpath
+      console.log(k);
+      console.log("before");
       let current_value = await fetch_page_data(tab.id, v.xpath);
+      console.log(k);
+      console.log("after");
 
       // Close the tab after data has been fetched
       chrome.tabs.remove(tab.id);
@@ -41,6 +46,10 @@ async function handle_scan(sites) {
 
       // Update the badge text to alrert about deals
       set_badge_text();
+
+      console.log("here");
+      console.log(k);
+      console.log(v);
 
       // Update the data about the item if its a deal
       update_item(k, v, { shouldAlert: is_deal });
@@ -59,6 +68,8 @@ async function fetch_page_data(tabId, xpath) {
         // Function to attempt getting the element
         const tryGetElement = () => {
           try {
+            ///*[@id="product-content"]/div/span/h2
+
             const element = document.evaluate(
               xpath,
               document,
@@ -66,6 +77,8 @@ async function fetch_page_data(tabId, xpath) {
               XPathResult.FIRST_ORDERED_NODE_TYPE,
               null,
             ).singleNodeValue;
+            console.log("hi");
+            console.log(element);
 
             if (element) {
               clearTimeout(timeoutId);
