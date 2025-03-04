@@ -29,7 +29,7 @@ fs.readdirSync(TEST_PATH).forEach((test_id) => {
             {
               [crypto.randomUUID()]: {
                 title: "test",
-                url: "/home/llalma/Documents/Projects/price-checker-extension/testing/tests/8b4d1aefa1ee3b35fb1865b950b6529e2faedd20710d0fa74a462b1942924297/page.html",
+                url: "file:///home/llalma/Documents/Projects/price-checker-extension/testing/tests/8b4d1aefa1ee3b35fb1865b950b6529e2faedd20710d0fa74a462b1942924297/page.html",
                 xpath: xpath,
                 previousValue: expected,
                 alertValue: "166",
