@@ -3,6 +3,7 @@ import * as path from "path";
 import * as fs from "fs";
 
 const TEST_PATH = path.join(__dirname, "tests");
+const COLOUR_STRING: string = "rgb(255, 255, 0)";
 
 fs.readdirSync(TEST_PATH).forEach((test_id) => {
   // Get the test path ID
@@ -17,22 +18,24 @@ fs.readdirSync(TEST_PATH).forEach((test_id) => {
     // Get the test info
     const info = testInfo(testPath).test_info;
 
-    page.on("console", (msg) => console.log(msg.text()));
-
+    // Load the extension to interact with it
     await page.goto(`chrome-extension://${extensionId}/popup/base.html`);
+
+    // Calculate the alert value -  Add $10 for now to alway trigger true
+    const alert_value = Number(info.expected.replace("$", "")) + 10;
 
     // Add value via storage api
     await page.evaluate(
-      ({ url, xpath, expected }) => {
+      ({ testPath, url, xpath, expected, alert_value }) => {
         return new Promise((resolve) => {
           chrome.storage.sync.set(
             {
               [crypto.randomUUID()]: {
                 title: "test",
-                url: "file:///home/llalma/Documents/Projects/price-checker-extension/testing/tests/8b4d1aefa1ee3b35fb1865b950b6529e2faedd20710d0fa74a462b1942924297/page.html",
+                url: `file://${testPath}/page.html`,
                 xpath: xpath,
                 previousValue: expected,
-                alertValue: "166",
+                alertValue: alert_value,
                 shouldAlert: false,
               },
             },
@@ -42,18 +45,49 @@ fs.readdirSync(TEST_PATH).forEach((test_id) => {
           );
         });
       },
-      { url: info.url, xpath: info.xpath, expected: info.expected },
+      {
+        testPath: testPath,
+        url: info.url,
+        xpath: info.xpath,
+        expected: info.expected,
+        alert_value: alert_value,
+      },
     );
 
     // Click the scan button
     await page.click("#scan");
-    await page.screenshot({ path: "playrwight_chrome_extensions.png" });
 
-    console.log(await page.context().pages());
+    // Get the elment which should change colour - only has 1 element at a time, so can assume oth element
+    const element = await page.locator("#displayList").locator("div").first();
+    const res = await checkUntilTimeout(element, COLOUR_STRING);
 
-    // await page.goto(`file://${path.join(testPath, "page.html")}`);
-    // await expect(page.locator(info.xpath)).toHaveText(info.expected, {
-    //   useInnerText: true,
-    // });
+    // Return if the value matched
+    expect(res).toBe(true);
   });
 });
+
+// Keep running the get colour command until it matches the expected value or timeout occours
+async function checkUntilTimeout<T>(
+  element: Locator,
+  expectedValue: T,
+  timeoutMs: number = 5000,
+  intervalMs: number = 100,
+): Promise<T | null> {
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeoutMs) {
+    const color = await element.evaluate((el) => {
+      return window.getComputedStyle(el).getPropertyValue("background-color");
+    });
+
+    if (color === expectedValue) {
+      return true;
+    }
+
+    // Wait for the specified interval before next attempt
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  }
+
+  // Timeout occurred
+  return false;
+}
