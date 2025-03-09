@@ -26,7 +26,7 @@ async function render_list() {
   // Populate the list with stored items
   Object.entries(items).forEach((item) => {
     const key = item[0];
-    const data = item[1];
+    let data = item[1];
     // Create a div per item
     const listItem = document.createElement("div");
 
@@ -57,6 +57,26 @@ async function render_list() {
       chrome.windows.create({ url: data.url });
     };
 
+    // Add tag button
+    const tag_button = document.createElement("button");
+    tag_button.innerHTML = '<i class="fa-solid fa-tags"></i>';
+    tag_button.className = "action-btn";
+    tag_button.onclick = async () => {
+      const tag = prompt("Add Tag");
+
+      // Get the current tags
+      let new_tags = new Set(data.tags ?? []);
+
+      new_tags.add(tag);
+
+      chrome.runtime.sendMessage({
+        type: "update_item",
+        key: key,
+        data: data,
+        updated_data: { tags: [...new_tags] },
+      });
+    };
+
     // Add toggle_deal button
     const toggle_deal_button = document.createElement("button");
     toggle_deal_button.innerHTML =
@@ -83,6 +103,7 @@ async function render_list() {
     listItem.appendChild(title);
     listItem.appendChild(scan_button);
     listItem.appendChild(link_button);
+    listItem.appendChild(tag_button);
     listItem.appendChild(toggle_deal_button);
     listItem.appendChild(delete_button);
 

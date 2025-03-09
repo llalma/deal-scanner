@@ -20,6 +20,9 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     current_deal_count--;
     update_item(message.key, message.data, message.updated_data);
     set_badge_text();
+  } else if (message.type === "update_item") {
+    // Update the item
+    update_item(message.key, message.data, message.updated_data);
   }
 });
 
