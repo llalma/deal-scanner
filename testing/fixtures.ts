@@ -8,6 +8,7 @@ export const test = base.extend<{
   context: BrowserContext;
   extensionId: string;
   testInfo: (path: string) => { inputFolders: string[] };
+  LoadData: (page: any, data: object) => {};
 }>({
   // Get page context
   context: async ({}, use) => {
@@ -44,6 +45,37 @@ export const test = base.extend<{
     };
 
     await use(getTestInfo);
+  },
+
+  // Load data via storage api
+  loadData: async ({}, use) => {
+    const loadData = async (page: any, data: object) => {
+      await page.evaluate(
+        ({ data }) => {
+          return new Promise((resolve) => {
+            chrome.storage.sync.set(
+              {
+                [crypto.randomUUID()]: {
+                  title: data.title,
+                  url: `file://${data.url}/page.html`,
+                  xpath: data.xpath,
+                  previousValue: data.expected,
+                  alertValue: data.alertValue,
+                  shouldAlert: data.shouldAlert,
+                },
+              },
+              () => {
+                resolve();
+              },
+            );
+          });
+        },
+        {
+          data: data,
+        },
+      );
+    };
+    await use(loadData);
   },
 });
 export const expect = test.expect;

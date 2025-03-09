@@ -14,6 +14,7 @@ fs.readdirSync(TEST_PATH).forEach((test_id) => {
     page,
     extensionId,
     testInfo,
+    loadData,
   }) => {
     // Get the test info
     const info = testInfo(testPath).test_info;
@@ -25,34 +26,14 @@ fs.readdirSync(TEST_PATH).forEach((test_id) => {
     const alert_value = Number(info.expected.replace("$", "")) + 10;
 
     // Add value via storage api
-    await page.evaluate(
-      ({ testPath, url, xpath, expected, alert_value }) => {
-        return new Promise((resolve) => {
-          chrome.storage.sync.set(
-            {
-              [crypto.randomUUID()]: {
-                title: "test",
-                url: `file://${testPath}/page.html`,
-                xpath: xpath,
-                previousValue: expected,
-                alertValue: alert_value,
-                shouldAlert: false,
-              },
-            },
-            () => {
-              resolve();
-            },
-          );
-        });
-      },
-      {
-        testPath: testPath,
-        url: info.url,
-        xpath: info.xpath,
-        expected: info.expected,
-        alert_value: alert_value,
-      },
-    );
+    await loadData(page, {
+      title: "test2",
+      url: testPath,
+      xpath: info.xpath,
+      previousValue: info.expected,
+      alertValue: alert_value,
+      shouldAlert: info.shouldAlert,
+    });
 
     // Click the scan button
     await page.click("#scan");
