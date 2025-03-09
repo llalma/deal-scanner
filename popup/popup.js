@@ -1,8 +1,15 @@
-// WAit for dom load
+// Wait for dom load
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("add").title = "Click on value you wish to watch";
   document.getElementById("scan").title = "Check values of all watched items";
   document.getElementById("clear").title = "Delete all watched items";
+});
+
+const filterInput = document.getElementById("filterInput");
+filterInput.addEventListener("input", function () {
+  console.log("filter?");
+  console.log(filterInput.value);
+  render_list();
 });
 
 // Event for updating the added items list
@@ -18,13 +25,24 @@ chrome.storage.onChanged.addListener(async (changes, namespace) => {
 });
 
 async function render_list() {
-  const items = await chrome.storage.sync.get();
+  const items = Object.entries(await chrome.storage.sync.get());
+
+  let filtered_items;
+  console.log(items);
+  console.log(filterInput.value);
+  if (filterInput.value !== "") {
+    filtered_items = items.filter(([_, data]) =>
+      data.tags.includes(filterInput.value),
+    );
+  } else {
+    filtered_items = items;
+  }
 
   // Clear items from previous render
   itemList.innerHTML = "";
 
   // Populate the list with stored items
-  Object.entries(items).forEach((item) => {
+  filtered_items.forEach((item) => {
     const key = item[0];
     let data = item[1];
     // Create a div per item
