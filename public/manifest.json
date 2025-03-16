@@ -1,0 +1,15 @@
+{
+  "name": "Price-Scanner-TBD",
+  "description": "Add URLs for specific items you wish to track. These Items can then be automatically scanned to find out if its on sale",
+  "version": "0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_icon": "icon-32.png",
+    "default_popup": "src/popup/index.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["scripting", "activeTab", "storage"],
+  "host_permissions": ["https://*/*"]
+}
