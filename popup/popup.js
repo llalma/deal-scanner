@@ -1,8 +1,15 @@
-// WAit for dom load
+// Wait for dom load
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("add").title = "Click on value you wish to watch";
   document.getElementById("scan").title = "Check values of all watched items";
   document.getElementById("clear").title = "Delete all watched items";
+});
+
+const filterInput = document.getElementById("filterInput");
+filterInput.addEventListener("input", function () {
+  console.log("filter?");
+  console.log(filterInput.value);
+  render_list();
 });
 
 // Event for updating the added items list
@@ -18,15 +25,26 @@ chrome.storage.onChanged.addListener(async (changes, namespace) => {
 });
 
 async function render_list() {
-  const items = await chrome.storage.sync.get();
+  const items = Object.entries(await chrome.storage.sync.get());
+
+  let filtered_items;
+  console.log(items);
+  console.log(filterInput.value);
+  if (filterInput.value !== "") {
+    filtered_items = items.filter(([_, data]) =>
+      data.tags.includes(filterInput.value),
+    );
+  } else {
+    filtered_items = items;
+  }
 
   // Clear items from previous render
   itemList.innerHTML = "";
 
   // Populate the list with stored items
-  Object.entries(items).forEach((item) => {
+  filtered_items.forEach((item) => {
     const key = item[0];
-    const data = item[1];
+    let data = item[1];
     // Create a div per item
     const listItem = document.createElement("div");
 
@@ -57,6 +75,26 @@ async function render_list() {
       chrome.windows.create({ url: data.url });
     };
 
+    // Add tag button
+    const tag_button = document.createElement("button");
+    tag_button.innerHTML = '<i class="fa-solid fa-tags"></i>';
+    tag_button.className = "action-btn";
+    tag_button.onclick = async () => {
+      const tag = prompt("Add Tag");
+
+      // Get the current tags
+      let new_tags = new Set(data.tags ?? []);
+
+      new_tags.add(tag);
+
+      chrome.runtime.sendMessage({
+        type: "update_item",
+        key: key,
+        data: data,
+        updated_data: { tags: [...new_tags] },
+      });
+    };
+
     // Add toggle_deal button
     const toggle_deal_button = document.createElement("button");
     toggle_deal_button.innerHTML =
@@ -83,6 +121,7 @@ async function render_list() {
     listItem.appendChild(title);
     listItem.appendChild(scan_button);
     listItem.appendChild(link_button);
+    listItem.appendChild(tag_button);
     listItem.appendChild(toggle_deal_button);
     listItem.appendChild(delete_button);
 

@@ -41,6 +41,7 @@ document.addEventListener(
         previousValue: dollar_value,
         alertValue: user_input,
         shouldAlert: false,
+        tags: [],
       },
     });
 
