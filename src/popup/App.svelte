@@ -2,12 +2,20 @@
   let items = [];
 
   function handleScanClick() {
-    alert('Scan button clicked!');
+      chrome.runtime.sendMessage({
+        type: "scan",
+      });
   }
 
-  function handleAddClick() {
-    items = [...items, "test"];
-  }
+    function handleAddClick() { 
+      chrome.runtime.sendMessage({
+	type: "update",
+	payload: {
+	    key: "1",
+	    data: {'data1':'data2'}
+	}
+      });
+    }
 
   function deleteItem(index) {
       console.log(index)

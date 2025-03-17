@@ -12,11 +12,14 @@ export default defineConfig({
     rollupOptions: {
       input: {
         popup: path.resolve(__dirname, "src/popup/index.html"),
+        service_worker: "src/service_worker/message_reciever.ts",
       },
       output: {
-        entryFileNames: "popup/[name].js",
-        chunkFileNames: "popup/[name].js",
-        assetFileNames: "popup/[name].[ext]",
+        entryFileNames: (chunk) => {
+          return "src/[name]/[name].js";
+        },
+        chunkFileNames: "src/[name]/[name].js",
+        assetFileNames: "src/[name]/[name].[ext]",
       },
     },
   },
