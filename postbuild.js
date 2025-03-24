@@ -11,6 +11,22 @@ fs.copyFileSync(
   path.resolve(__dirname, "dist/manifest.json"),
 );
 
+// Create injections directory if it doesn't exist
+const injectionsDir = path.resolve(__dirname, "dist/src/injections");
+if (!fs.existsSync(injectionsDir)) {
+  fs.mkdirSync(injectionsDir, { recursive: true });
+}
+// Copy injectionos
+const sourceInjectionsDir = path.resolve(__dirname, "src/injections");
+if (fs.existsSync(sourceInjectionsDir)) {
+  fs.readdirSync(sourceInjectionsDir).forEach((file) => {
+    fs.copyFileSync(
+      path.join(sourceInjectionsDir, file),
+      path.join(injectionsDir, file),
+    );
+  });
+}
+
 // Create images directory if it doesn't exist
 const imagesDir = path.resolve(__dirname, "dist/images");
 if (!fs.existsSync(imagesDir)) {

@@ -1,4 +1,7 @@
 <script>
+  import List from './List.svelte';
+
+
   let items = [];
 
   function handleScanClick() {
@@ -7,20 +10,27 @@
       });
   }
 
-    function handleAddClick() { 
-      chrome.runtime.sendMessage({
-	type: "update",
-	payload: {
-	    key: "1",
-	    data: {'data1':'data2'}
-	}
-      });
-    }
+  function handleAddClick() {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+	const tab_id = tabs[0].id;
+	
+	// Inject the scripts for getting user selection
+	await chrome.scripting.executeScript({
+	    files: ["src/injections/functions.js", "src/injections/eventListeners.js"],
+	    target: { tabId: tab_id},
+	});
 
-  function deleteItem(index) {
-      console.log(index)
-      items = items.filter((_, i) => i !== index);
-  }
+	// Inject CSS to greyout screen
+	await chrome.scripting.insertCSS({
+	    files: ["src/injections/injection.css"],
+	    target: { tabId: tab_id }
+	})
+
+	// Close the popup window so it dosent get in the way
+	await window.close();
+    })
+  };
+
 </script>
 
 <div class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -42,19 +52,8 @@
     </div>
     
     <!-- Dynamic watch list -->
-    <ul class="space-y-2 w-full max-w-sm">
-      {#each items as item, index}
-        <li class="flex justify-between items-center p-2 border rounded bg-gray-100">
-          <span>{item}</span>
-          <button
-            on:click={() => deleteItem(index)}
-            class="bg-red-500 text-white px-2 py-1 rounded ml-4 cursor-pointer" 
-          >
-            Delete
-          </button>
-        </li>
-      {/each}
-    </ul>
+    <List/>
+    
   </div>
 </div>
 

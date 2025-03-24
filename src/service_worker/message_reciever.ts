@@ -15,8 +15,17 @@ chrome.runtime.onMessage.addListener(
       case "scan":
         console.log("scan");
         break;
+
       case "update":
         await update_item(message.payload.key, message.payload.data);
+        break;
+
+      case "remove_css":
+        console.log("remove");
+        await chrome.scripting.removeCSS({
+          files: ["src/injections/injection.css"],
+          target: { tabId: sender.tab.id },
+        });
         break;
 
       default:
