@@ -1,4 +1,5 @@
 import { update_item } from "./update_item";
+import { scan_items } from "./scan_item";
 
 interface Message {
   type: string;
@@ -13,7 +14,7 @@ chrome.runtime.onMessage.addListener(
   ) => {
     switch (message.type) {
       case "scan":
-        console.log("scan");
+        await scan_items(message.payload);
         break;
 
       case "update":
@@ -21,7 +22,6 @@ chrome.runtime.onMessage.addListener(
         break;
 
       case "remove_css":
-        console.log("remove");
         await chrome.scripting.removeCSS({
           files: ["src/injections/injection.css"],
           target: { tabId: sender.tab.id },

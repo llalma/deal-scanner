@@ -1,12 +1,12 @@
 <script>
   import List from './List.svelte';
 
-
   let items = [];
 
-  function handleScanClick() {
+  async function handleScanClick() {
       chrome.runtime.sendMessage({
         type: "scan",
+	payload: Object.entries(await chrome.storage.sync.get()) // Scan all item
       });
   }
 

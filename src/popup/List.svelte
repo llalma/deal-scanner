@@ -6,7 +6,6 @@
   // Event to handle initial load of data
   document.addEventListener("DOMContentLoaded", async () => {
       items = Object.entries(await chrome.storage.sync.get());
-			console.log(items[0])
   });
 
   // Event to trigger a list rerender - We only care about sync

@@ -37,6 +37,7 @@ document.addEventListener(
         data: {
           name: document.title,
           link: window.location.href,
+          xpath: getXPath(element),
         },
       },
     });
