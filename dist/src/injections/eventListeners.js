@@ -22,12 +22,11 @@ document.addEventListener(
       return;
     }
 
-    // Remove $ signs from string
-    let dollar_value = element_text.replace("$", "");
-
-    // const user_input = prompt(
-    //   `Enter Value to send alert. Current value is ${dollar_value}`,
-    // );
+    // Get the value from user to alert on
+    // TODO make sure input is valid
+    const target_price = prompt(
+      `Enter Value to send alert. Current value is ${element_text}`,
+    );
 
     // Send value to storage
     chrome.runtime.sendMessage({
@@ -38,6 +37,9 @@ document.addEventListener(
           name: document.title,
           link: window.location.href,
           xpath: getXPath(element),
+          target_price: target_price,
+          alert_bool: false,
+          tags: [],
         },
       },
     });

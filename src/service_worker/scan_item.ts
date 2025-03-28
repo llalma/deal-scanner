@@ -1,3 +1,6 @@
+import { update_item } from "./update_item";
+import { sanitise_xpath_value } from "../helpers/helpers";
+
 // Function which is execute in tab to fetch the xpath
 // TODO surely better way todo it
 function injected_func(xpath) {
@@ -61,14 +64,21 @@ async function fetch_xpath(tab_id: string, xpath: string): string {
   return res[0].result;
 }
 
-async function scan_item(data: Object) {
+async function scan_item(guid: string, data: Object) {
   // Create a tab
   // TODO: someway to make it work without active
   const tab = await chrome.tabs.create({ url: data.link, active: true });
 
   // Get the current value of the xpath
   const current_value = await fetch_xpath(tab.id, data.xpath);
-  console.log(`Value for ${data.name} is ${current_value}`);
+
+  // Handling if the value is < target_price
+  if (
+    parseFloat(sanitise_xpath_value(current_value)) <
+    parseFloat(data.target_price)
+  ) {
+    await update_item(guid, { alert_bool: true });
+  }
 
   // Close the tab after data has been fetched
   chrome.tabs.remove(tab.id);
@@ -76,6 +86,6 @@ async function scan_item(data: Object) {
 
 export async function scan_items(items: Array<[string, Object]>) {
   for (const [guid, data] of items) {
-    await scan_item(data);
+    await scan_item(guid, data);
   }
 }

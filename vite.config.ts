@@ -13,6 +13,7 @@ export default defineConfig({
       input: {
         popup: path.resolve(__dirname, "src/popup/index.html"),
         service_worker: "src/service_worker/message_reciever.ts",
+        helpers: "src/helpers/helpers.ts",
       },
       output: {
         entryFileNames: (chunk) => {

@@ -1,5 +1,6 @@
 // Update the given id with data. If key dosent exist it creates it. If it does exist update with merge
-export async function update_item(id, data) {
+// TODO this only handles adding, not deleting
+export async function update_item(id: string, data: Object) {
   // Get the data if it exists -  need todo this weird indexing thing on result so nt double nesting
   const original_data = (await chrome.storage.sync.get([id]))[id];
 
