@@ -6,9 +6,6 @@
 
   // Delete tag from chrome storage
   async function delete_tag(event) {
-    // Prevent click closing modal
-    event.stopPropagation()
-
     await chrome.runtime.sendMessage({
       type: 'update',
       payload: {
@@ -25,7 +22,7 @@
   {tag}
   <button
     type="button"
-    class="ml-1 text-gray-500 hover:text-gray-700 focus:outline-none"
+    class="ml-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
     on:click={delete_tag}
   >
     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

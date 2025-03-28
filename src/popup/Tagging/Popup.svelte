@@ -33,19 +33,38 @@
     bind:this={modalElement}
   >
     <div
-      class="modal-content"
+      class="modal-content relative"
       transition:scale={{ duration: 250, easing: quintOut }}
       on:click|stopPropagation
     >
-      <h1>Add Tags</h1>
+      <!-- Close button -->
+      <button
+        class="modal-close absolute top-2 right-2 cursor-pointer"
+        on:click={closeModal}
+      >
+        <svg
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+      <h1>Tags</h1>
 
+      <!-- Render each tag as a pill -->
       <div class="flex flex-wrap items-center border rounded p-2 w-full">
-        <!-- Render tags as bullets -->
         {#each $modalStore.tags as tag}
           <Tag {tag} />
         {/each}
 
-        <!-- Input for user to create new tags -->
+        <!-- Input field for adding tags -->
         <input
           type="text"
           on:keydown={add_tag}
@@ -53,8 +72,6 @@
           class="flex-grow min-w-0 border-none outline-none"
         />
       </div>
-
-      <!-- <button class="modal-close" on:click={closeModal}> &times; </button> -->
     </div>
   </div>
 {/if}
