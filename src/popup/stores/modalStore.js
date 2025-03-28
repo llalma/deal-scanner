@@ -24,15 +24,16 @@ export function closeModal() {
 
 // Handles the rerendering when tags are deleted or added
 chrome.storage.onChanged.addListener(async (changes, namespace) => {
+  // Fetch the current values of the store
   const store = get(modalStore);
 
   // Only bother checking if store is open and namespace is sync
   if (namespace === "sync" && store.isOpen) {
-    const tags = await chrome.storage.sync.get(store.guid);
-
     // Update the modal store with the new tags
     modalStore.update((store) => ({
-      tags: tags,
+      isOpen: true,
+      guid: store.guid,
+      tags: changes[store.guid].newValue.tags,
     }));
   }
 });
