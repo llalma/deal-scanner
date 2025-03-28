@@ -2,26 +2,19 @@
   import { modalStore, closeModal } from '../stores/modalStore'
   import { fade, scale } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
-  import Tag from './Tag.svelte'
+  import TagSearch from './TagSearch.svelte'
 
   let modalElement
-  let input_tag
+  let search_element
 
-  // Adds tags, only triggers when users presses enter. Otherwise do nothing
-  async function add_tag(event) {
-    if (event.key === 'Enter') {
-      // Update the sync storage with new tag - Converts array to set, adds a tag then back to array to prevent duplicate tags
-      await chrome.runtime.sendMessage({
-        type: 'update',
-        payload: {
-          key: $modalStore.guid,
-          data: { tags: Array.from(new Set($modalStore.tags).add(input_tag)) },
-        },
-      })
-
-      // Clear the input
-      input_tag = ''
-    }
+  async function update_sync_storage(tags) {
+    await chrome.runtime.sendMessage({
+      type: 'update',
+      payload: {
+        key: $modalStore.guid,
+        data: { tags: tags },
+      },
+    })
   }
 </script>
 
@@ -57,21 +50,10 @@
         </svg>
       </button>
       <h1>Tags</h1>
-
-      <!-- Render each tag as a pill -->
-      <div class="flex flex-wrap items-center border rounded p-2 w-full">
-        {#each $modalStore.tags as tag}
-          <Tag {tag} />
-        {/each}
-
-        <!-- Input field for adding tags -->
-        <input
-          type="text"
-          on:keydown={add_tag}
-          bind:value={input_tag}
-          class="flex-grow min-w-0 border-none outline-none"
-        />
-      </div>
+      <TagSearch
+        tags={$modalStore.tags}
+        on_tags_change_func={update_sync_storage}
+      />
     </div>
   </div>
 {/if}
