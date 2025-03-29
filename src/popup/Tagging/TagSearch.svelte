@@ -19,9 +19,9 @@
     }
   })
 
-  // Adds tags, only triggers when users presses enter. Otherwise do nothing
+  // Adds tags, only triggers when users presses enter and input is not blank. Otherwise do nothing -
   function add_tag(event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && input_tag) {
       tags = Array.from(new Set(tags).add(input_tag))
 
       // Clear the input

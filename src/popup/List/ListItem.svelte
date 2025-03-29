@@ -24,7 +24,7 @@
 
 <main>
   <li
-    class="flex justify-between items-center p-2 border rounded bg-gray-100 cursor-pointer"
+    class="flex justify-between items-center p-2 border rounded bg-gray-100 cursor-pointer max-h-14"
     class:bg-red-100={data.alert_bool}
   >
     <a href={data.link} on:click={handle_click}>

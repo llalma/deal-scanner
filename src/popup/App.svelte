@@ -38,7 +38,9 @@
 
 <TagModal />
 
-<div class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+<div
+  class="items-center justify-center min-h-screen bg-gray-100 p-4 overflow-hidden"
+>
   <div class="flex flex-col items-center gap-4">
     <div class="flex gap-4 mb-4">
       <button

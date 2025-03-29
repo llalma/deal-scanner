@@ -25,14 +25,14 @@
   }
 </script>
 
-<main>
-  {#if items}
+{#if items}
+  <div class="flex flex-col h-screen">
     <!-- Search bar for tags-->
-    <div>
+    <div class="p-4 bg-gray-100 border-b border-gray-200">
       <TagSearch on_tags_change_func={(tags) => (current_filters = tags)} />
     </div>
 
-    <div>
+    <div class="max-h-54 overflow-y-auto p-4">
       <ul class="space-y-2 w-full max-w-sm">
         {#each items as item, index}
           {#if all_matches(current_filters, item[1].tags)}
@@ -41,5 +41,5 @@
         {/each}
       </ul>
     </div>
-  {/if}
-</main>
+  </div>
+{/if}
