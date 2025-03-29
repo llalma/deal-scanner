@@ -12,7 +12,7 @@ document.addEventListener("mouseout", mouseout_func, {
 // Event for finiding the clicked element
 document.addEventListener(
   "click",
-  function (event) {
+  async function (event) {
     const element = event.target;
     const element_text = element.firstChild?.nodeValue?.trim() || "";
 
@@ -22,27 +22,31 @@ document.addEventListener(
       return;
     }
 
-    // Remove $ signs from string
-    let dollar_value = element_text.replace("$", "");
-
-    const user_input = prompt(
-      `Enter Value to send alert. Current value is ${dollar_value}`,
+    // Get the value from user to alert on
+    // TODO make sure input is valid
+    const target_price = prompt(
+      `Enter Value to send alert. Current value is ${element_text}`,
     );
+
+    // Send value to storage
+    chrome.runtime.sendMessage({
+      type: "update",
+      payload: {
+        key: crypto.randomUUID(),
+        data: {
+          name: document.title,
+          link: window.location.href,
+          xpath: getXPath(element),
+          target_price: target_price,
+          alert_bool: false,
+          tags: [],
+        },
+      },
+    });
 
     // Send info to background worker
     chrome.runtime.sendMessage({
-      type: "complete",
-    });
-    chrome.storage.sync.set({
-      [crypto.randomUUID()]: {
-        title: document.title,
-        url: window.location.href,
-        xpath: getXPath(element),
-        previousValue: dollar_value,
-        alertValue: user_input,
-        shouldAlert: false,
-        tags: [],
-      },
+      type: "remove_css",
     });
 
     // Event to clean up functions. Needs to be after events being removed

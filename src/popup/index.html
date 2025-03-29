@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Svelte Chrome Extension</title>
+</head>
+      <style>
+      html, body {
+    width: 300px; /* Set width for Chrome extension popup */
+    height: 400px; /* Set a fixed height for popup */
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden; /* Prevent vertical scrolling */
+  }
+  
+  body {
+    padding: 10px;
+  }
+  
+  </style>
+<body>
+  <div id="app"></div>
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>
