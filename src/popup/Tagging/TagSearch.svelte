@@ -8,6 +8,8 @@
   // TODO convert tags to Sets at start so dont need to keep converting
   let { tags, on_tags_change_func } = $props()
 
+  const PLACEHOLDER_TEXT = 'Press enter to add tag'
+
   // Keeps the user input from text input
   let input_tag = $state()
 
@@ -71,6 +73,7 @@
     type="text"
     on:keydown={add_tag}
     bind:value={input_tag}
+    placeholder={PLACEHOLDER_TEXT}
     class="flex-grow min-w-0 border-none outline-none"
   />
 </div>
