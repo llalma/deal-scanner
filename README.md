@@ -8,3 +8,4 @@
 * Alerts in icon
 * Mark item as action needed if cant find xpath
 * Adjust tartegt price ect
+* Create an item type and use that everywhere
