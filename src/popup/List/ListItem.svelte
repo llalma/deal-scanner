@@ -1,5 +1,6 @@
 <script lang="ts">
   import { openModal } from '../stores/modalStore'
+  import Icon from '@iconify/svelte'
 
   // Params
   export let guid
@@ -29,17 +30,11 @@
     <a href={data.link} on:click={handle_click}>
       <span>{data.name}</span>
     </a>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      on:click={test}
-    >
-      Edit Tags
+    <button on:click={test} class="cursor-pointer">
+      <Icon icon="mdi:tag" style="font-size: 24px;" />
     </button>
-    <button
-      class="bg-red-500 text-white px-2 py-1 rounded ml-4 cursor-pointer"
-      on:click={delete_item}
-    >
-      Delete
+    <button class="cursor-pointer" on:click={delete_item}>
+      <Icon icon="mdi:close" style="font-size: 24px;" />
     </button>
   </li>
 </main>
