@@ -85,7 +85,14 @@ async function scan_item(guid: string, data: Object) {
 }
 
 export async function scan_items(items: Array<[string, Object]>) {
-  for (const [guid, data] of items) {
-    await scan_item(guid, data);
-  }
+  // TODO make this a toggle setting in options to help debug?  
+  // for (const [guid, data] of items) {
+  //   await scan_item(guid, data);
+  // }
+
+  await Promise.all(
+    items.map(async ([guid, data]) => {
+      await scan_item(guid, data);
+    }),
+  );
 }
