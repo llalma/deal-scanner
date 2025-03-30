@@ -2,21 +2,10 @@
   import { modalStore, closeModal } from '../stores/modalStore'
   import { fade, scale } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
-  import TagSearch from './TagSearch.svelte'
+  import EditItem from './EditItem.svelte'
   import Icon from '@iconify/svelte'
 
   let modalElement
-  let search_element
-
-  async function update_sync_storage(tags) {
-    await chrome.runtime.sendMessage({
-      type: 'update',
-      payload: {
-        key: $modalStore.guid,
-        data: { tags: tags },
-      },
-    })
-  }
 </script>
 
 <!-- Content of the modal -->
@@ -38,11 +27,9 @@
       >
         <Icon icon="mdi:close" style="font-size: 24px;" />
       </button>
-      <h1>Tags</h1>
-      <TagSearch
-        tags={$modalStore.tags}
-        on_tags_change_func={update_sync_storage}
-      />
+
+      <!-- Update item info -->
+      <EditItem guid={$modalStore.guid} data={$modalStore.data} />
     </div>
   </div>
 {/if}

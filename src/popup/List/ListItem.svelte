@@ -18,7 +18,7 @@
   }
 
   function test() {
-    openModal(guid, data.tags)
+    openModal(guid, data, data.tags)
   }
 </script>
 

@@ -3,13 +3,15 @@ import { writable, get } from "svelte/store";
 export const modalStore = writable({
   isOpen: false,
   guid: null,
+  data: null,
   tags: null,
 });
 
-export function openModal(guid, tags = {}) {
+export function openModal(guid, data, tags = {}) {
   modalStore.update((store) => ({
     isOpen: true,
     guid: guid,
+    data: data,
     tags: tags,
   }));
 }
@@ -18,6 +20,7 @@ export function closeModal() {
   modalStore.update((store) => ({
     isOpen: false,
     guid: null,
+    data: null,
     tags: null,
   }));
 }
@@ -33,6 +36,7 @@ chrome.storage.onChanged.addListener(async (changes, namespace) => {
     modalStore.update((store) => ({
       isOpen: true,
       guid: store.guid,
+      data: changes[store.guid].newValues,
       tags: changes[store.guid].newValue.tags,
     }));
   }
