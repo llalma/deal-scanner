@@ -10,3 +10,4 @@
 * ~~Adjust tartegt price ect~~
 * Create an item type and use that everywhere
 * Setting menu
+* Remover everything but digits or . in value selection
