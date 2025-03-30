@@ -31,7 +31,7 @@
       <span>{data.name}</span>
     </a>
     <button on:click={test} class="cursor-pointer">
-      <Icon icon="mdi:tag" style="font-size: 24px;" />
+      <Icon icon="mdi:pencil" style="font-size: 24px;" />
     </button>
     <button class="cursor-pointer" on:click={delete_item}>
       <Icon icon="mdi:close" style="font-size: 24px;" />

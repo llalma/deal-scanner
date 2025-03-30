@@ -24,25 +24,28 @@
   })
 </script>
 
-<div class="flex flex-wrap items-center border rounded p-2 w-full">
-  <!-- Edit name -->
+<!-- Name Edit-->
+<div class="bg-white rounded-lg shadow p-4">
+  <label class="block text-sm font-medium text-gray-700"> Name </label>
   <input
     type="text"
     bind:value={name_input}
-    class="flex-grow min-w-0 border-none outline-none"
+    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
   />
 </div>
 
-<div class="flex flex-wrap items-center border rounded p-2 w-full">
-  <!-- Edit target_price -->
+<!-- Target price Edit-->
+<div class="bg-white rounded-lg shadow p-4">
+  <label class="block text-sm font-medium text-gray-700"> Target Price </label>
   <input
     type="text"
     bind:value={target_price_input}
-    class="flex-grow min-w-0 border-none outline-none"
+    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
   />
 </div>
 
-<div class="flex flex-wrap items-center border rounded p-2 w-full">
-  <!-- Edit Tags-->
+<!-- Tags Edit-->
+<div class="bg-white rounded-lg shadow p-4">
+  <label class="block text-sm font-medium text-gray-700"> Tags </label>
   <TagSearch bind:tags={tags_input} />
 </div>
