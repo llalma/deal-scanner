@@ -2,24 +2,14 @@
 <!-- Each pill box can be manually deleted. Used for tags -->
 
 <script>
-  import { createEventDispatcher } from 'svelte'
-
   // Params
   // TODO convert tags to Sets at start so dont need to keep converting
-  let { tags, on_tags_change_func } = $props()
+  let { tags = $bindable(), on_tags_change_func } = $props()
 
   const PLACEHOLDER_TEXT = 'Press enter to add tag'
 
   // Keeps the user input from text input
   let input_tag = $state()
-
-  // Trigger event when tags change
-  $effect(() => {
-    // Trigger function in parent element, if one is given
-    if (on_tags_change_func) {
-      on_tags_change_func(tags)
-    }
-  })
 
   // Adds tags, only triggers when users presses enter and input is not blank. Otherwise do nothing -
   function add_tag(event) {
