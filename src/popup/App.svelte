@@ -15,6 +15,12 @@
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const tab_id = tabs[0].id
 
+      // Request permissions to host - Used to inject script to find element user clicks and to scan for user requsted checks
+      await chrome.permissions.request({
+        permissions: ['scripting'],
+        origins: [tabs[0].url],
+      })
+
       // Inject the scripts for getting user selection
       await chrome.scripting.executeScript({
         files: [
