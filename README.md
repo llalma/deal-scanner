@@ -7,5 +7,7 @@
 * ~~Scan single item~~
 * ~~Alerts in icon~~
 * Mark item as action needed if cant find xpath
-* Adjust tartegt price ect
+* ~~Adjust tartegt price ect~~
 * Create an item type and use that everywhere
+* Setting menu
+* Remover everything but digits or . in value selection
