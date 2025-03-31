@@ -26,21 +26,19 @@ function injected_func(xpath) {
 
         // Handle in element cannot be found and all loading attempts have passed
         // TODO make this adjustable
-        if (count > 25) {
+        if (count > 15) {
           throw new Exception("Could not find element on given xpath");
         }
 
-        count++;
         return false;
       } catch (error) {
-        if (count > 5) {
+        if (count > 15) {
           resolve({
             error: true,
             msg: "Could not find element on given xpath2",
           });
           return true;
         }
-        count++;
         return false;
       }
     };
@@ -61,7 +59,6 @@ function injected_func(xpath) {
       } else {
         // If page isn't even interactive yet, keep waiting
         setTimeout(checkState, 100);
-        count++;
       }
     };
 
@@ -85,7 +82,7 @@ async function fetch_xpath(tab_id: string, xpath: string): string {
   }
 
   // Handle xpath found outcome
-  return res[0].result;
+  return res[0].result.msg;
 }
 
 async function scan_item(guid: string, data: Object) {

@@ -8,7 +8,12 @@
 
   // Does what it says on the tin
   async function delete_item() {
-    await chrome.storage.sync.remove(guid)
+    await chrome.runtime.sendMessage({
+      type: 'delete',
+      payload: {
+        key: guid,
+      },
+    })
   }
 
   // Handles left clicks on name span as it dosent work. Changes to default to open new tab

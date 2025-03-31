@@ -1,6 +1,6 @@
 <script lang="ts">
   import ListItem from './ListItem.svelte'
-  import TagSearch from '../Tagging/TagSearch.svelte'
+  import TagSearch from '../EditItem/TagSearch.svelte'
 
   let items: [Object] = []
   let current_filters
