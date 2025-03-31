@@ -33,3 +33,18 @@ async function set_badge() {
   // Set the badge text
   chrome.action.setBadgeText({ text: String(alert_count) });
 }
+
+// Function to handle setting errors just so all errors are in 1 place and should be easier to rewrite in future
+export async function add_err(guid: string, error_id: int) {
+  let error_message: string;
+
+  // Determine the error via error_id, No default value so cases have to be handled
+  switch (error_id) {
+    case 1:
+      error_message = "Unable to locate xpath on webpage";
+  }
+
+  await update_item(guid, {
+    error_alert: { id: error_id, msg: error_message },
+  });
+}

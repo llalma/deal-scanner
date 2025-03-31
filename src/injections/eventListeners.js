@@ -39,6 +39,7 @@ document.addEventListener(
           xpath: getXPath(element),
           target_price: target_price,
           alert_bool: false,
+          error_alert: {},
           tags: [],
         },
       },
