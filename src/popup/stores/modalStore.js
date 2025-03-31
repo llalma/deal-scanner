@@ -7,6 +7,7 @@ export const modalStore = writable({
   tags: null,
 });
 
+// TODO remove tags input. Can fetch from data input
 export function openModal(guid, data, tags = {}) {
   modalStore.update((store) => ({
     isOpen: true,

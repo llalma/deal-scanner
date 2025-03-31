@@ -99,7 +99,10 @@ async function scan_item(guid: string, data: Object) {
       parseFloat(sanitise_xpath_value(current_value)) <
       parseFloat(data.target_price)
     ) {
-      await update_item(guid, { alert_bool: true });
+      await update_item(guid, {
+        alert_bool: true,
+        error_alert: {}, // Set this to blank so cant be error and an alert at once
+      });
     }
   } catch (err) {
     // Handle case xpath could not be found

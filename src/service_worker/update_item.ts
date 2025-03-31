@@ -60,6 +60,7 @@ export async function add_err(guid: string, error_id: int) {
   // Update the item with the alert
   await update_item(guid, {
     error_alert: { id: error_id, msg: error_message },
+    alert_bool: false, // Also set this to false to be sure
   });
 
   // Update the badge text to alert value
