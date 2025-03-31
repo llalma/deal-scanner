@@ -5,6 +5,7 @@
 
   let name_input = $state(data.name)
   let target_price_input = $state(data.target_price)
+  let xpath_input = $state(data.xpath)
   let tags_input = $state(data.tags)
 
   // If any of the state values change trigger function to save data to storage
@@ -17,6 +18,7 @@
         data: {
           name: name_input,
           target_price: target_price_input,
+          xpath: xpath_input,
           tags: tags_input,
         },
       },
@@ -40,6 +42,16 @@
   <input
     type="text"
     bind:value={target_price_input}
+    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+  />
+</div>
+
+<!-- Xpath Edit-->
+<div class="bg-white rounded-lg shadow p-4">
+  <label class="block text-sm font-medium text-gray-700"> Xpath </label>
+  <input
+    type="text"
+    bind:value={xpath_input}
     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
   />
 </div>

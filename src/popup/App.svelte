@@ -1,6 +1,6 @@
 <script>
   import List from './List/List.svelte'
-  import TagModal from './Tagging/Popup.svelte'
+  import TagModal from './EditItem/Popup.svelte'
 
   let items = []
 

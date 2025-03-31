@@ -1,4 +1,4 @@
-import { update_item } from "./update_item";
+import { update_item, add_err } from "./update_item";
 import { sanitise_xpath_value } from "../helpers/helpers";
 
 // Function which is execute in tab to fetch the xpath
@@ -20,11 +20,25 @@ function injected_func(xpath) {
 
         if (element) {
           clearTimeout(timeoutId);
-          resolve(element.textContent);
+          resolve({ error: false, msg: element.textContent });
           return true;
         }
+
+        // Handle in element cannot be found and all loading attempts have passed
+        // TODO make this adjustable
+        if (count > 15) {
+          throw new Exception("Could not find element on given xpath");
+        }
+
         return false;
       } catch (error) {
+        if (count > 15) {
+          resolve({
+            error: true,
+            msg: "Could not find element on given xpath2",
+          });
+          return true;
+        }
         return false;
       }
     };
@@ -40,6 +54,7 @@ function injected_func(xpath) {
         if (!tryGetElement()) {
           // If element not found, retry after a short delay
           setTimeout(checkState, 100);
+          count++;
         }
       } else {
         // If page isn't even interactive yet, keep waiting
@@ -48,6 +63,7 @@ function injected_func(xpath) {
     };
 
     // Start checking
+    let count = 0;
     checkState();
   });
 }
@@ -60,8 +76,13 @@ async function fetch_xpath(tab_id: string, xpath: string): string {
     args: [xpath],
   });
 
-  // todo add handling if xpath not found
-  return res[0].result;
+  // Handle error state
+  if (res[0].result.error) {
+    throw new Error("Could not find xpath");
+  }
+
+  // Handle xpath found outcome
+  return res[0].result.msg;
 }
 
 async function scan_item(guid: string, data: Object) {
@@ -69,15 +90,23 @@ async function scan_item(guid: string, data: Object) {
   // TODO: someway to make it work without active
   const tab = await chrome.tabs.create({ url: data.link, active: true });
 
-  // Get the current value of the xpath
-  const current_value = await fetch_xpath(tab.id, data.xpath);
+  try {
+    // Get the current value of the xpath
+    const current_value = await fetch_xpath(tab.id, data.xpath);
 
-  // Handling if the value is < target_price
-  if (
-    parseFloat(sanitise_xpath_value(current_value)) <
-    parseFloat(data.target_price)
-  ) {
-    await update_item(guid, { alert_bool: true });
+    // Handling if the value is < target_price
+    if (
+      parseFloat(sanitise_xpath_value(current_value)) <
+      parseFloat(data.target_price)
+    ) {
+      await update_item(guid, {
+        alert_bool: true,
+        error_alert: {}, // Set this to blank so cant be error and an alert at once
+      });
+    }
+  } catch (err) {
+    // Handle case xpath could not be found
+    await add_err(guid, 1);
   }
 
   // Close the tab after data has been fetched
@@ -85,7 +114,7 @@ async function scan_item(guid: string, data: Object) {
 }
 
 export async function scan_items(items: Array<[string, Object]>) {
-  // TODO make this a toggle setting in options to help debug?  
+  // TODO make this a toggle setting in options to help debug?
   // for (const [guid, data] of items) {
   //   await scan_item(guid, data);
   // }

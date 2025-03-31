@@ -1,4 +1,4 @@
-import { update_item } from "./update_item";
+import { update_item, determine_err_status } from "./update_item";
 import { scan_items } from "./scan_item";
 
 interface Message {
@@ -19,6 +19,12 @@ chrome.runtime.onMessage.addListener(
 
       case "update":
         await update_item(message.payload.key, message.payload.data);
+        await determine_err_status();
+        break;
+
+      case "delete":
+        await chrome.storage.sync.remove(message.payload.key);
+        await determine_err_status();
         break;
 
       case "remove_css":
