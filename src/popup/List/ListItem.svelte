@@ -16,10 +16,44 @@
     })
   }
 
+  async function get_affiliate_link(hostname: String) {
+    try {
+      // Try fetch from local storage
+      let item = (await chrome.storage.local.get([hostname]))[hostname]
+
+      // If it dosent exist. Fetch via api
+      if (!item) {
+        console.log(`${hostname} not in local storage. Fetching from API`)
+        const params = new URLSearchParams()
+        params.append('hostname', hostname)
+
+        const url = `https://1bosf5z2e5.execute-api.ap-southeast-2.amazonaws.com/whole/fetch_affiliation_links?${params.toString()}`
+
+        const response = await fetch(url)
+        const data = await response.json()
+        item = data.items1.Item
+
+        // Add to local storage
+        chrome.storage.local.set({ [hostname]: item })
+      }
+
+      return item.link
+    } catch (error) {
+      // If failed for any reason return the input
+      return hostname
+    }
+  }
+
   // Handles left clicks on name span as it dosent work. Changes to default to open new tab
-  function handle_click() {
+  async function handle_click() {
     event.preventDefault()
-    window.open(data.link, '_blank')
+
+    // Try fetch affiliation link
+    // TODO clean thsi up. hostname needs www. in it then need to add back https???
+    const url = new URL(data.link)
+    const affiliate_link = await get_affiliate_link(url.host)
+
+    window.open('https://' + affiliate_link + url.pathname, '_blank')
   }
 </script>
 
