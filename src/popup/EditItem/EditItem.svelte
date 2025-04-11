@@ -28,8 +28,11 @@
 
 <!-- Name Edit-->
 <div class="bg-white rounded-lg shadow p-4">
-  <label class="block text-sm font-medium text-gray-700"> Name </label>
+  <label for="name_input" class="block text-sm font-medium text-gray-700">
+    Name
+  </label>
   <input
+    id="name_input"
     type="text"
     bind:value={name_input}
     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -38,8 +41,11 @@
 
 <!-- Target price Edit-->
 <div class="bg-white rounded-lg shadow p-4">
-  <label class="block text-sm font-medium text-gray-700"> Target Price </label>
+  <label for="price_input" class="block text-sm font-medium text-gray-700">
+    Target Price
+  </label>
   <input
+    id="price_input"
     type="text"
     bind:value={target_price_input}
     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -48,8 +54,11 @@
 
 <!-- Xpath Edit-->
 <div class="bg-white rounded-lg shadow p-4">
-  <label class="block text-sm font-medium text-gray-700"> Xpath </label>
+  <label for="xpath_input" class="block text-sm font-medium text-gray-700">
+    Xpath
+  </label>
   <input
+    id="xpath_input"
     type="text"
     bind:value={xpath_input}
     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -58,6 +67,8 @@
 
 <!-- Tags Edit-->
 <div class="bg-white rounded-lg shadow p-4">
-  <label class="block text-sm font-medium text-gray-700"> Tags </label>
-  <TagSearch bind:tags={tags_input} />
+  <label for="tags_input" class="block text-sm font-medium text-gray-700">
+    Tags
+  </label>
+  <TagSearch id="tags_input" bind:tags={tags_input} />
 </div>

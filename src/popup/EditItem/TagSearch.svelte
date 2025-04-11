@@ -39,7 +39,8 @@
       <button
         type="button"
         class="ml-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
-        on:click={() => delete_tag(tag)}
+        onclick={() => delete_tag(tag)}
+        aria-label="Delete tag"
       >
         <svg
           class="h-4 w-4"
@@ -61,7 +62,7 @@
   <!-- Input field for adding tags -->
   <input
     type="text"
-    on:keydown={add_tag}
+    onkeydown={add_tag}
     bind:value={input_tag}
     placeholder={PLACEHOLDER_TEXT}
     class="flex-grow min-w-0 border-none outline-none"
