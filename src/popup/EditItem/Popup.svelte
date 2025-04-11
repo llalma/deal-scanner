@@ -18,7 +18,6 @@
     <div
       class="modal-content relative"
       transition:scale={{ duration: 250, easing: quintOut }}
-      on:click|stopPropagation
     >
       <!-- Close button -->
       <button
