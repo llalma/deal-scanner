@@ -48,3 +48,21 @@ function getXPath(element) {
 
   return `/${paths.join("/")}`;
 }
+
+export function clean_up_text_field(input) {
+  // Remove all chars except digits and .
+  input = input.replace(/[^\d.]/g, "");
+
+  // Remove white space
+  input = input.trim();
+
+  // Check it actually has a value after removing everything
+  if (!input) {
+    throw Error("No chars in selection after cleaning");
+  }
+
+  // Check it can be converted to a float
+  const converted_value = parseFloat(input);
+
+  return converted_value;
+}

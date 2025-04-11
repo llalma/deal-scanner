@@ -10,8 +10,9 @@
 * ~~Adjust tartegt price ect~~
 * Create an item type and use that everywhere
 * Setting menu - Toggle affiliate links
+    * Clean up modal store with it
 * Remover everything but digits or . in value selection
 * Compare items from list of retailers?
 * Affiliate links clearn up
-* clean up warnings
+* ~~clean up warnings~~
 

@@ -1,3 +1,5 @@
+import { clean_up_text_field } from "./functions.js";
+
 // Define an abort to use to send events
 window.controller = new AbortController();
 
@@ -17,7 +19,9 @@ document.addEventListener(
     const element_text = element.firstChild?.nodeValue?.trim() || "";
 
     // check if the element actually has text. I.E value is not ina child element
-    if (!element_text) {
+    try {
+      const float_value = clean_up_text_field(element_text);
+    } catch (e) {
       alert("Selected element did not contain a $ value");
       return;
     }
@@ -25,7 +29,7 @@ document.addEventListener(
     // Get the value from user to alert on
     // TODO make sure input is valid
     const target_price = prompt(
-      `Enter Value to send alert. Current value is ${element_text}`,
+      `Enter Value to send alert. Current value is ${float_value}`,
     );
 
     // Send value to storage
@@ -37,6 +41,7 @@ document.addEventListener(
           name: document.title,
           link: window.location.href,
           xpath: getXPath(element),
+          original_value: float_value,
           target_price: target_price,
           alert_bool: false,
           error_alert: {},
