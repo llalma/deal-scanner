@@ -7,14 +7,14 @@
 
   // Event to handle initial load of data
   document.addEventListener('DOMContentLoaded', async () => {
-    items = Object.entries(await chrome.storage.sync.get())
+    items = Object.entries((await chrome.storage.sync.get("WatchedItems")).WatchedItems)
   })
 
   // Event to trigger a list rerender - We only care about sync
   // TODO could use changes var here to save a call to storage.sync
   chrome.storage.onChanged.addListener(async (changes, namespace) => {
     if (namespace === 'sync') {
-      items = Object.entries(await chrome.storage.sync.get())
+      items = Object.entries(await chrome.storage.sync.get("WatchedItems"))
     }
   })
 

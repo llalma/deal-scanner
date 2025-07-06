@@ -1,14 +1,19 @@
+export const WATCHED_ITEMS_KEY = "WatchedItems"
+
 // Update the given id with data. If key dosent exist it creates it. If it does exist update with merge
 // TODO this only handles adding, not deleting
 export async function update_item(id: string, data: Object) {
-  // Get the data if it exists -  need todo this weird indexing thing on result so nt double nesting
-  const original_data = (await chrome.storage.sync.get([id]))[id];
 
-  // Overwrite any data if item already existed
-  const updated_data = Object.assign({}, original_data, data);
+  // Get the original_data watched data
+  let watched_items = (await chrome.storage.sync.get(WATCHED_ITEMS_KEY))[WATCHED_ITEMS_KEY]
+
+  // Update the line item with the new data
+  watched_items[id] = Object.assign({}, watched_items[id], data)
 
   // Update storage with new data
-  chrome.storage.sync.set({ [id]: updated_data });
+  chrome.storage.sync.set({ 
+    [WATCHED_ITEMS_KEY]: watched_items
+  });
 }
 
 // Handle initial load
@@ -25,7 +30,7 @@ chrome.storage.onChanged.addListener(async (changes, namespace) => {
 // TODO not very efficeint wil the call to storage sync
 async function set_badge() {
   // Get all the items added to the extension
-  const items = Object.entries(await chrome.storage.sync.get());
+  const items = Object.entries((await chrome.storage.sync.get(WATCHED_ITEMS_KEY))[WATCHED_ITEMS_KEY]);
 
   // Get the current count where alert_bool is true
   const alert_count = items.filter((v, _) => v[1].alert_bool).length;
@@ -71,7 +76,7 @@ export async function add_err(guid: string, error_id: int) {
 // Function to check if the alert should be removed
 export async function determine_err_status() {
   // Get all the items added to the extension
-  const items = Object.entries(await chrome.storage.sync.get());
+  const items = Object.entries((await chrome.storage.sync.get([WATCHED_ITEMS_KEY]))[WATCHED_ITEMS_KEY]);
 
   // Get the current count where error_alert is not blank
   const alert_count = items.filter(

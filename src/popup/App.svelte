@@ -6,8 +6,7 @@
 
   async function handleScanClick() {
     chrome.runtime.sendMessage({
-      type: 'scan',
-      payload: Object.entries(await chrome.storage.sync.get()), // Scan all item
+      type: 'scan'
     })
   }
 
