@@ -1,4 +1,4 @@
-import { update_item, determine_err_status } from "./update_item";
+import { update_item, determine_err_status, WATCHED_ITEMS_KEY } from "./update_item";
 import { scan_items } from "./scan_item";
 
 interface Message {
@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(
   ) => {
     switch (message.type) {
       case "scan":
-        await scan_items(message.payload);
+        await scan_items(Object.entries((await chrome.storage.sync.get(WATCHED_ITEMS_KEY)).WatchedItems))
         break;
 
       case "update":
@@ -33,6 +33,7 @@ chrome.runtime.onMessage.addListener(
           target: { tabId: sender.tab.id },
         });
         break;
+      
 
       default:
         console.error(`Not a valid message type: ${message.type}`);

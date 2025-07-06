@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { openModal } from '../stores/modalStore'
+  import { openModal } from '../EditItem/Modal'
   import Icon from '@iconify/svelte'
 
   // Params
@@ -27,7 +27,10 @@
         const params = new URLSearchParams()
         params.append('hostname', hostname)
 
-        const url = `https://1bosf5z2e5.execute-api.ap-southeast-2.amazonaws.com/whole/fetch_affiliation_links?${params.toString()}`
+        // Fetch affiliate link url from settings
+        // TODO I think I can use stores or some share variabels in svelte?
+        const url = (await (chrome.storage.sync.get("Settings")))['Settings'].affiliate_link_endpoint
+        console.log(url)
 
         const response = await fetch(url)
         const data = await response.json()
@@ -48,12 +51,27 @@
   async function handle_click() {
     event.preventDefault()
 
-    // Try fetch affiliation link
-    // TODO clean thsi up. hostname needs www. in it then need to add back https???
-    const url = new URL(data.link)
-    const affiliate_link = await get_affiliate_link(url.host)
+    console.log("here")
+    
+    // TODO use shared vars
+    const use_affiliate_link = (await (chrome.storage.sync.get("Settings")))['Settings'].enable_affiliate_links
 
-    window.open('https://' + affiliate_link + url.pathname, '_blank')
+    if (use_affiliate_link){
+      console.log('Using affiliate links')
+
+      // Try fetch affiliation link
+      // TODO clean thsi up. hostname needs www. in it then need to add back https???
+      const url = new URL(data.link)
+      const affiliate_link = await get_affiliate_link(url.host)
+    
+      // Open with the affiliate link
+      window.open('https://' + affiliate_link + url.pathname, '_blank')
+    
+    }else {
+
+      // Open using the value saved
+      window.open(data.link, '_blank')
+    }
   }
 </script>
 

@@ -2,12 +2,12 @@
   import { modalStore, closeModal } from './Modal'
   import { fade, scale } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
-  import EditItem from './EditItem.svelte'
+  import SettingsMenu from './SettingsMenu.svelte'
   import Icon from '@iconify/svelte'
 
   let modalElement
 </script>
-
+  
 <!-- Content of the modal -->
 {#if $modalStore.isOpen}
   <div
@@ -26,9 +26,8 @@
       >
         <Icon icon="mdi:close" style="font-size: 24px;" />
       </button>
-
-      <!-- Update item info -->
-      <EditItem guid={$modalStore.guid} data={$modalStore.data} />
+    
+      <SettingsMenu />
     </div>
   </div>
 {/if}
