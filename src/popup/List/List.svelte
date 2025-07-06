@@ -14,7 +14,7 @@
   // TODO could use changes var here to save a call to storage.sync
   chrome.storage.onChanged.addListener(async (changes, namespace) => {
     if (namespace === 'sync') {
-      items = Object.entries(await chrome.storage.sync.get("WatchedItems"))
+      items = Object.entries((await chrome.storage.sync.get("WatchedItems"))["WatchedItems"])
     }
   })
 
