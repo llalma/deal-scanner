@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { openModal } from '../stores/modalStore'
+  import { openModal } from '../EditItem/Modal'
   import Icon from '@iconify/svelte'
 
   // Params

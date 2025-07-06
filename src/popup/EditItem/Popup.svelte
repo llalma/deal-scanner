@@ -1,5 +1,5 @@
 <script>
-  import { modalStore, closeModal } from '../stores/modalStore'
+  import { modalStore, closeModal } from './Modal'
   import { fade, scale } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
   import EditItem from './EditItem.svelte'

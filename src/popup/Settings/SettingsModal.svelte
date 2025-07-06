@@ -1,5 +1,5 @@
 <script>
-  import { modalStore, closeModal } from '../stores/settingsModal'
+  import { modalStore, closeModal } from './Modal'
   import { fade, scale } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
   import SettingsMenu from './SettingsMenu.svelte'
@@ -7,7 +7,7 @@
 
   let modalElement
 </script>
-
+  
 <!-- Content of the modal -->
 {#if $modalStore.isOpen}
   <div

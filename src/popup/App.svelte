@@ -2,7 +2,7 @@
   import List from './List/List.svelte'
   import TagModal from './EditItem/Popup.svelte'
 
-  import { openModal } from './stores/settingsModal'
+  import { openModal } from './Settings/Modal'
   import SettingsModal from './Settings/SettingsModal.svelte'
   import Icon from '@iconify/svelte'
 

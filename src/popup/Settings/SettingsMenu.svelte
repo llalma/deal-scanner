@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { modalStore, closeModal } from '../stores/settingsModal'
+  import { modalStore, closeModal } from './Modal'
   import { fade, scale } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
   import Icon from '@iconify/svelte'
