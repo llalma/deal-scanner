@@ -1,6 +1,5 @@
 import { update_item, determine_err_status, WATCHED_ITEMS_KEY } from "./update_item";
 import { scan_items } from "./scan_item";
-import { update_settings } from "./settings"
 
 interface Message {
   type: string;
@@ -35,9 +34,6 @@ chrome.runtime.onMessage.addListener(
         });
         break;
       
-      case "update_settings":
-        update_settings(message.payload.data)
-        break;
 
       default:
         console.error(`Not a valid message type: ${message.type}`);
